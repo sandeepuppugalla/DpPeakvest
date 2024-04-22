@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+            text-align: center;
+            animation: fade-in 0.5s ease-out;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-container h2 {
+            text-align: center;
+        }
+
+        .btn {
+            width: 200px;
+            padding: 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .popup-container {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <div class="options-container" id="optionsContainer">
+            <div class="option">
+                <button class="btn btn-success" onclick="showLoginOptions('user')">Login as User</button>
+            </div>
+            <br>
+            <div class="option">
+                <button class="btn btn-success" onclick="showLoginOptions('admin')">Login as Admin</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="userPopup" class="popup-container">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('user')">&times;</span>
+            <h2>Login as User</h2>
+            <div id="userLoginForm">
+                <div class="form-group">
+                    <label for="userUsername">Username:</label>
+                    <input type="text" id="userUsername" name="userUsername" placeholder="Enter your username">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="userPassword">Password:</label>
+                    <input type="password" id="userPassword" name="userPassword" placeholder="Enter your password">
+                </div>
+                <br>
+                <button class="btn btn-success" onclick="login('user')">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminPopup" class="popup-container">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('admin')">&times;</span>
+            <h2>Login as Admin</h2>
+            <div id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminUsername">Username:</label>
+                    <input type="text" id="adminUsername" name="adminUsername" placeholder="Enter your username">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="adminPassword">Password:</label>
+                    <input type="password" id="adminPassword" name="adminPassword" placeholder="Enter your password">
+                </div>
+                <br>
+                <button class="btn btn-success" onclick="login('admin')">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        if (sessionStorage.getItem('user')) {
+            window.location.href = 'Welcome_User.html';
+        }
+        else if (sessionStorage.getItem('admin')) {
+            window.location.href = 'Welcome_Admin.html';
+        }
+        else{
+            
+        }
+        function toggleOptions() {
+            var optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.classList.toggle('active');
+        }
+        function showLoginOptions(option) {
+            var popup = document.getElementById(option + 'Popup');
+            popup.style.display = 'block';
+        }
+
+        function closePopup(option) {
+            var popup = document.getElementById(option + 'Popup');
+            popup.style.display = 'none';
+        }
+
+        function login(option) {
+            var username, password;
+            if (option === 'user') {
+                username = document.getElementById('userUsername').value;
+                password = document.getElementById('userPassword').value;
+            } else if (option === 'admin') {
+                username = document.getElementById('adminUsername').value;
+                password = document.getElementById('adminPassword').value;
+            }
+
+            if (validate(option, username, password)) {
+                sessionStorage.setItem(option, 'true');
+                var welcomePage = option === 'user' ? 'welcome_user.html' : 'welcome_admin.html';
+                window.location.href = welcomePage;
+            } else {
+                alert('Invalid username or password');
+            }
+        }
+        function validate(option, username, password) {
+            if (option === 'user' && username === 'user' && password === 'password') {
+                return true;
+            } else if (option === 'admin' && username === 'admin' && password === 'adminpassword') {
+                return true;
+            }
+            return false;
+        }
+    </script>
+
+</body>
+
+</html>

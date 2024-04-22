@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Page</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .login-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        animation: fade-in 0.5s ease-out;
+    }
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .login-container h2 {
+        margin-bottom: 20px;
+    }
+    .btn {
+        width: 200px;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        margin-bottom: 10px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+        background-color: #0056b3;
+    }
+    .options-container {
+        display: none;
+        animation: slide-in 0.5s ease-out;
+    }
+    .options-container.active {
+        display: block;
+    }
+    @keyframes slide-in {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .option {
+        margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Login</h2>
+    <button class="btn" onclick="toggleOptions()">Show Options</button>
+    <div class="options-container" id="optionsContainer">
+        <div class="option">
+            <button class="btn" onclick="showLoginOptions('user')">Login as User</button>
+        </div>
+        <div class="option">
+            <button class="btn" onclick="showLoginOptions('admin')">Login as Admin</button>
+        </div>
+    </div>
+</div>
+
+<div id="userPopup" class="popup-container">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup('user')">&times;</span>
+        <h2>Login as User</h2>
+        <div id="userLoginForm">
+            <div class="form-group">
+                <label for="userUsername">Username:</label>
+                <input type="text" id="userUsername" name="userUsername" placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="userPassword">Password:</label>
+                <input type="password" id="userPassword" name="userPassword" placeholder="Enter your password">
+            </div>
+            <button class="btn" onclick="login('user')">Login</button>
+        </div>
+    </div>
+</div>
+
+<div id="adminPopup" class="popup-container">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup('admin')">&times;</span>
+        <h2>Login as Admin</h2>
+        <div id="adminLoginForm">
+            <div class="form-group">
+                <label for="adminUsername">Username:</label>
+                <input type="text" id="adminUsername" name="adminUsername" placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="adminPassword">Password:</label>
+                <input type="password" id="adminPassword" name="adminPassword" placeholder="Enter your password">
+            </div>
+            <button class="btn" onclick="login('admin')">Login</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleOptions() {
+        var optionsContainer = document.getElementById('optionsContainer');
+        optionsContainer.classList.toggle('active');
+    }
+
+    function showLoginOptions(option) {
+        var popup = document.getElementById(option + 'Popup');
+        popup.style.display = 'block';
+    }
+
+    function closePopup(option) {
+        var popup = document.getElementById(option + 'Popup');
+        popup.style.display = 'none';
+    }
+
+    function login(option) {
+        var username, password;
+        if (option === 'user') {
+            username = document.getElementById('userUsername').value;
+            password = document.getElementById('userPassword').value;
+        } else if (option === 'admin') {
+            username = document.getElementById('adminUsername').value;
+            password = document.getElementById('adminPassword').value;
+        }
+
+        // Dummy validation, replace with actual validation logic
+        if (validate(username, password)) {
+            // Redirect to welcome page based on selected option
+            var welcomePage = option === 'user' ? 'welcome_user.html' : 'welcome_admin.html';
+            window.location.href = welcomePage;
+        } else {
+            alert('Invalid username or password');
+        }
+    }
+
+    function validate(username, password) {
+        // Dummy validation, replace with actual validation logic
+        if (username === 'user' && password === 'password') {
+            return true;
+        } else if (username === 'admin' && password === 'adminpassword') {
+            return true;
+        }
+        return false;
+    }
+</script>
+
+</body>
+</html>
